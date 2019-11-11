@@ -1,24 +1,24 @@
-package graph;
+package tree;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class PasswordGraph {
+public class PasswordTree {
 
-	private PasswordGraphNode start;
+	private PasswordTreeNode start;
 	
-	public PasswordGraph() {
-		start = new PasswordGraphNode();
+	public PasswordTree() {
+		start = new PasswordTreeNode();
 	}
 	
-	public PasswordGraph(String word) {
-		start=new PasswordGraphNode();
+	public PasswordTree(String word) {
+		start=new PasswordTreeNode();
 		
 		this.addWord(word);
 	}
 	
-	public PasswordGraph(List<String> words) {
-		start=new PasswordGraphNode();
+	public PasswordTree(List<String> words) {
+		start=new PasswordTreeNode();
 		for (String word : words) {
 			this.addWord(word);
 		}
@@ -27,13 +27,13 @@ public class PasswordGraph {
 	public void addWord(String word) {
 		if (word.isBlank()) return;
 
-		PasswordGraphNode current = start;
-		PasswordGraphNode next = null;
+		PasswordTreeNode current = start;
+		PasswordTreeNode next = null;
 		for (int index=0; index<word.length(); index++) {
 			char _char = word.charAt(index);
 			next = current.getChild(_char);
 			if (next==null) { 
-				next = new PasswordGraphNode(current, word.charAt(index));
+				next = new PasswordTreeNode(current, word.charAt(index));
 				current.addChildren(next);
 			}
 			current = next;
@@ -41,10 +41,10 @@ public class PasswordGraph {
 	}
 	
 	public void printGraph() {
-		Queue<PasswordGraphNode> nodes = new ConcurrentLinkedQueue<PasswordGraphNode>();
+		Queue<PasswordTreeNode> nodes = new ConcurrentLinkedQueue<PasswordTreeNode>();
 		nodes.add(start);
 		
-		PasswordGraphNode current;
+		PasswordTreeNode current;
 		while (!nodes.isEmpty()) {
 			current=nodes.poll();
 			System.out.println(current.getChar()+ " ");
@@ -52,11 +52,11 @@ public class PasswordGraph {
 		}
 	}
 	
-	public List<PasswordGraphNode> getLeaves() {
+	public List<PasswordTreeNode> getLeaves() {
 		return start.getLeaves();
 	}
 
-	public PasswordGraphNode getRoot() {
+	public PasswordTreeNode getRoot() {
 		return start;
 	}
 }

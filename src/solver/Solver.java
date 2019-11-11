@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import graph.PasswordGraph;
-import graph.PasswordGraphNode;
+import tree.PasswordTree;
+import tree.PasswordTreeNode;
 
 public class Solver {
 
@@ -19,12 +19,12 @@ public class Solver {
 			"where", "which", "world", "would", "write"
 	};
 	
-	private PasswordGraph graph;
-	private Collection<PasswordGraphNode> candidates; 
+	private PasswordTree graph;
+	private Collection<PasswordTreeNode> candidates; 
 	
 	public Solver() {
-		graph = new PasswordGraph();
-		candidates = new HashSet<PasswordGraphNode>();
+		graph = new PasswordTree();
+		candidates = new HashSet<PasswordTreeNode>();
 		for (String word : words) {
 			graph.addWord(word);
 		}
@@ -39,12 +39,12 @@ public class Solver {
 	public void addFilter(final String chars) {
 		String _chars = chars.toLowerCase().replace(' ', '\0');
 
-		Set<PasswordGraphNode> newCandidates = new HashSet<PasswordGraphNode>();
+		Set<PasswordTreeNode> newCandidates = new HashSet<PasswordTreeNode>();
 		
-		Iterator<PasswordGraphNode> it = candidates.iterator();
+		Iterator<PasswordTreeNode> it = candidates.iterator();
 		char cchar;
-		PasswordGraphNode current;
-		PasswordGraphNode children;
+		PasswordTreeNode current;
+		PasswordTreeNode children;
 		while (it.hasNext()) {
 			current = it.next();
 			for (int index=0; index<_chars.length(); index++) {
@@ -59,8 +59,8 @@ public class Solver {
 	public Collection<String> getPossibleWords() {
 		HashSet<String> words = new HashSet<String>();
 		
-		for (PasswordGraphNode node : candidates) {
-			for (PasswordGraphNode leaf : node.getLeaves()) {
+		for (PasswordTreeNode node : candidates) {
+			for (PasswordTreeNode leaf : node.getLeaves()) {
 				words.add(leaf.formWord());
 			}
 		}
